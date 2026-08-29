@@ -1,0 +1,16 @@
+{
+  "name": "tareapizzas",
+  "version": "1.0.0",
+  "description": "Servicio de Pizzas",
+  "main": "pizzas.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon pizzas.js"
+  },
+  "author": "Yolanda Barrera",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}
