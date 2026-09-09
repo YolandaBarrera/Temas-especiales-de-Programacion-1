@@ -41,7 +41,7 @@ app.get("/api/v1/pizzas/:id", async (req, res) => {
 app.post("/api/v1/pizzas", async (req, res) => {
     const pizza = req.body
     const id = await agregarPizzaAsync(pizza)
-    const idDto = {id: id, fecha: new Date()}
+    const idDto = { id: id, fecha: new Date() }
     return res.status(201).json(idDto);
 })
 
@@ -49,35 +49,25 @@ app.post("/api/v1/pizzas", async (req, res) => {
 app.put("/api/v1/pizzas/:id", async (req, res) => {
     const id = req.params.id
     const pizza = await obtenerPizzaPorIdAsync(id)
-    if(pizza == undefined){
-        const mensaje = {mensaje: "No existe la pizza con ese id"}
+    if (pizza == undefined) {
+        const mensaje = { mensaje: "No existe la pizza con ese id" }
         return res.status(404).json(mensaje);
     }
     const pizzaActualizar = req.body
     await actualizarPizzaAsync(id, pizzaActualizar)
-    const mensaje = {mensaje: "Datos Actualizados"}
+    const mensaje = { mensaje: "Datos Actualizados" }
     return res.status(202).json(mensaje);
-    
+
 })
 
 
 // Borrar pizza por delete
 app.delete("/api/v1/pizzas/:id", async (req, res) => {
+    const id = req.params.id
+    await eliminarPizzaAsync(id)
 
-    const id = req.params.id;
-
-    const pizzaEliminada = await borrarPizzaAsync(id);
-
-    if (!pizzaEliminada) {
-        return res.status(404).json({
-            mensaje: "Pizza no encontrada"
-        });
-    }
-
-    return res.status(200).json({
-        mensaje: "Pizza eliminada correctamente",
-        pizza: pizzaEliminada
-    });
+    const mensaje = { mensaje: "Datos Eliminados" }
+    return res.status(202).json(mensaje);
 });
 
 
