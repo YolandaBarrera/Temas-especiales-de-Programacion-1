@@ -33,49 +33,30 @@ export async function obtenerPizzaPorIdAsync(id) {
 
 // ------------Tarea 08/09/26 }
 
-//Agrega una nueva pizza
+//Agregar una nueva pizza
 export async function agregarPizzaAsync(pizza) {
     await sleep(1000);
-
     pizzas.push(pizza);
-
-    return pizza;
+    return pizzas.length
 }
 
 
 // Actualiza una pizza
-export async function actualizarPizzaAsync(id, datosPizza) {
-    await sleep(1000);
+export async function actualizarPizzaAsync(id, Pizza) {
+    const index = pizzas.findIndex((x) => x.id == id);
+    if (indice === -1) 
+        return undefined
+    pizzas[index].nombre = pizza.nombre
+    pizzas[index].descripcion = pizza.descripcion
 
-    const indice = pizzas.findIndex((x) => x.id == id);
+    return pizzas[index]
+    
 
-    if (indice === -1) {
-        return undefined;
-    }
-
-    pizzas[indice] = {
-        ...pizzas[indice],
-        ...datosPizza,
-        id: pizzas[indice].id
-    };
-
-    return pizzas[indice];
 }
 
 
 //Elimina una pizza
 export async function borrarPizzaAsync(id) {
-    await sleep(1000);
-
-    const indice = pizzas.findIndex((x) => x.id == id);
-
-    if (indice === -1) {
-        return undefined;
-    }
-
-    const pizzaEliminada = pizzas[indice];
-
-    pizzas.splice(indice, 1);
-
-    return pizzaEliminada;
+    const index = pizzas.findIndex(x => x.id == id)
+    pizzas.splice(index)
 }
