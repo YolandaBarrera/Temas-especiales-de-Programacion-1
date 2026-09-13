@@ -37,60 +37,37 @@ app.get("/api/v1/pizzas/:id", async (req, res) => {
     return res.status(200).json(pizza);
 });
 
-
-// Agregar Pizza por método POST
+//Agregar pizza por POST
 app.post("/api/v1/pizzas", async (req, res) => {
-    const pizza = req.body;
-
-    // Generar un nuevo Id
-    const pizzas = await obtenerTodasLasPizzasAsync();
-    const nuevoId = pizzas.length > 0
-        ? Math.max(...pizzas.map((x) => x.id)) + 1
-        : 1;
-
-    const nuevaPizza = {
-        id: nuevoId,
-        nombre: pizza.nombre,
-        descripcion: pizza.descripcion
-    };
-
-    const resultado = await agregarPizzaAsync(nuevaPizza);
-    return res.status(201).json(resultado);
-});
-
+    const pizza = req.body
+    const id = await agregarPizzaAsync(pizza)
+    const idDto = { id: id, fecha: new Date() }
+    return res.status(201).json(idDto);
+})
 
 // Actualizar pizza por método PUT
 app.put("/api/v1/pizzas/:id", async (req, res) => {
-    const id = req.params.id;
-    const datosPizza = req.body;
-    const pizzaActualizada = await actualizarPizzaAsync(id, datosPizza);
-
-    if (!pizzaActualizada) {
-        return res.status(404).json({
-            mensaje: "Pizza no encontrada"
-        });
+    const id = req.params.id
+    const pizza = await obtenerPizzaPorIdAsync(id)
+    if (pizza == undefined) {
+        const mensaje = { mensaje: "No existe la pizza con ese id" }
+        return res.status(404).json(mensaje);
     }
-    return res.status(200).json(pizzaActualizada);
-});
+    const pizzaActualizar = req.body
+    await actualizarPizzaAsync(id, pizzaActualizar)
+    const mensaje = { mensaje: "Datos Actualizados" }
+    return res.status(202).json(mensaje);
+
+})
 
 
 // Borrar pizza por delete
 app.delete("/api/v1/pizzas/:id", async (req, res) => {
+    const id = req.params.id
+    await eliminarPizzaAsync(id)
 
-    const id = req.params.id;
-
-    const pizzaEliminada = await borrarPizzaAsync(id);
-
-    if (!pizzaEliminada) {
-        return res.status(404).json({
-            mensaje: "Pizza no encontrada"
-        });
-    }
-
-    return res.status(200).json({
-        mensaje: "Pizza eliminada correctamente",
-        pizza: pizzaEliminada
-    });
+    const mensaje = { mensaje: "Datos Eliminados" }
+    return res.status(202).json(mensaje);
 });
 
 
